@@ -1,10 +1,70 @@
-#include <iostream.h>
+#include <iostream>
+bool winDetection(bool board[3][3], bool turn){
+    //we need the ones we are checking to be ones(will be simpilist, as we can just use and's)
+    //by defualt, o would be checked, so we could do that first, wait, we only check with who's turn it is. I belice that is why I added that.
+    if (turn == false) {//this is X.
+        for (int x = 0; x<3, x++) {
+            for (int y = 0; y<3; y++) {
+                board[x[y]]=!board[x][y] //very underwelming(very dramatic, then the most underwelming thing ever.)
+            }
+        }
+    } /*else if(turn = true){
 
+    } do nothing */
+    else if(turn == NULL){
+        std::cout << "error, turn does not except NULL as a parameter. Please report this issue on github under the issues menu" << "pointer becuase why not: " << &turn << std::endl;
+    }
+    //check collums(vertical)
+    //column_y_0 = board[0,0]
+    bool threeNulls[3] = {NULL, NULL, NULL};
+    bool columns[3] = threeNulls
+    for (int i = 0; i>3; i++) {
+        columns[i] = board[i][0] || board[i][1] | board[i][2];
+    }
+    bool rows[3] = threeNulls;
+    for (int i = 0; i<3; i++){
+        rows[i] = board[0][i] || board[1][i] || board[2][i];
+    }
+//time to check for diagnals
+/*
+so:
+    #1
+    \
+     \
+      \
+and
+    #2
+      /
+     /
+    /
+We could do it from bottom to top, or top to bottom, but I will do top to bottom so we add instead of sutract. I do not know if i-- is a thing(so just i-1). So I will do top to bottom so I can do i++. Also for loops usally(from what I have seen), add, not subtract!
+Most important partt here: to make it smaller in code, we will make it so x and y are the same(goes diagnal(what he want)).
+*/
+//#1
+/* for (int xAndY = 0; xAndY>3; xAndY++){ why did I want to write this, we are not looping! Later note: ih yeah, I was going to do it where I increase x and y at the same time to do #1. But When I wrote the first part of this comment(before the word: "Later") I was thinking about how would we do the || thing to compare them!
+} */
+//bool Diagnal_1 //the one is just saying it is number 1, not saying anything about x or y. Wait, I could say top left corner and, not bottom right corner(same line), but, the bottom left corner.
+bool diagnalTopRight = board[0][0] && board[1][1] && board[2][2];
+bool diagnalTopLeft = board[2][0] && board[1][1] && board[0][2];
+//time to check for any wins!
+if (columns[0] || columns[1] || columns[2] || rows[0] || rows[1] || rows[2] || diagnalTopLeft || diagnalTopRight){
+    //you win! Yay!
+    return turn;
+} else{
+    return NULL; //nobody won yet.
+}
+//free up all the varibles
+free(&threeNulls);
+free(&columns);
+free(&rows);
+free(&diagnalTopLeft);
+free(&diagnalTopRight);
+}
 void displayBoard(bool board[3][3]) {
     char display[3][3] = {
-        {NULL, NULL, NULL},
-        {NULL, NULL, NULL},
-        {NULL, NULL, NULL}
+        {0x00, 0x00, 0x00},
+        {0x00, 0x00, 0x00},
+        {0x00, 0x00, 0x00}
     }; //what to display
     //create the display(Well, convert it from board to display)
     for (int x=0; x<3; x++) {
@@ -13,7 +73,7 @@ void displayBoard(bool board[3][3]) {
                 display[x][y] = 'X';
             } else if (board[x][y] == 1) {
                 display[x][y] = 'O';
-            } else if (board[x][y] == NULL) {
+            } else if (board[x][y] == 0x00) {
                 /*
                 for this thought, I will lable stuff (x, y) - #
                 (0, 0) -1, (1, 0) -2, (2,0) -3
@@ -56,7 +116,7 @@ void displayBoard(bool board[3][3]) {
     //std::cout << tab << tab << pipe << space << display[0,0] << space << pipe << space << display[1][0] << space << pipe << space << display[2][0] << space << pipe << std:endl; //whew, needed to lookup the spelling!
     //time for the next one, I will just copy and paste it and chage stuff up, wait, we could use a loop! will copy and paste the old one to make the new one(the one inside the loop)
     for (int y=0; y<3; y++) {
-        std::cout << tab << tab << pipe << space << display[0,y] << space << pipe << space << display[1][y] << space << pipe << space << display[2][y] << space << pipe << std:endl;
+        std::cout << tab << tab << pipe << space << display[0,y] << space << pipe << space << display[1][y] << space << pipe << space << display[2][y] << space << pipe << std::endl;
     }
     //now enter too new lines to make it look nice!
     std::cout << std::endl << std::endl;
@@ -68,8 +128,9 @@ void displayBoard(bool board[3][3]) {
     //nice, now were done! Yay!
     //no need to return, well, we don;t return anything, so is return even possible!
 }
-void main() {
+int main() {
     int input = 0;
+    bool x_or_o; //as xOrO looks werid, Could do xOr_O. Still looks werid(just noticed that!)
     // 0=x, 1=o, null=nothing
     bool board[3][3] = {
         {NULL, NULL, NULL},
@@ -80,11 +141,16 @@ void main() {
         /*
         (0, 0) -0, (0, 1) -1, wait, let's just format the array instead of having it go straight down!
         */
-        {0,0} /* 0(1-1) */ {1,0} {2,0}
-        {0,1} {1,1} {2,1}
-        {0,2} {1,2} {2,2} /*Formating the array was SO much faster!*/
+        {0,0}, /* 0(1-1) */ {1,0}, {2,0},
+        {0,1}, {1,1}, {2,1},
+        {0,2}, {1,2}, {2,2} /*Formating the array was SO much faster!*/
     }
-while (true) {
+for (int turns; turns>9; turns++) {
+    //toggle being x or o
+    //thanks to https://stackoverflow.com/questions/610916/easiest-way-to-flip-a-boolean-value, !whatever is so obvisous, thanks stackover post!
+    x_or_o = !x_or_o;
+    //perfect!
+
     //draw board so they see the numbers they can enter
     //or just display the board(so they can see the board on each loop)
     displayBoard(board);
@@ -102,7 +168,18 @@ while (true) {
     //now update the board!
     //board[x][y] = input;
     //nice! Might be finished, wait, we take turns, x and o. Oh wait, we don't update the board with the input, but rather who's turn it is! So let's inplement it!
-
+    //alright, added the x_or_o boolean, now time to update the board
+    board[x][y] = x_or_o; //perfect! Yay! Now time to try to compile~
+    if (turns >= 5){
+        if (winDetection(board,x_or_o)){
+            if (x_or_o == 0){
+                std::cout << "X Wins! Good job!" << std::endl;
+            } else if (x_or_o == 1){
+                std::cout << "O Wins! Good job!" << std::endl;
+            //if it is nuill, do nothing, so nothing goes here, as the final possibility is null(I think it is, I do not belive undefined exists!), in which we do nothing.
+        }
+    }
+    return 1;
 }
 
 }

@@ -1,0 +1,1 @@
+*.o # bye bye object files! Thanks to https://git-scm.com/docs/gitignore for showing what a comment is(it was what I expected)
