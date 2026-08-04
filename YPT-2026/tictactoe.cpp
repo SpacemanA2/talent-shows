@@ -164,7 +164,7 @@ int main() {
         {0,2}, {1,2}, {2,2} /*Formating the array was SO much faster!*/
     };
     // --- not varible definitions(IDK what to say, this is the end of the varibles definitons) ---
-for (int turns; turns<9; turns++) {
+for (int turns = 0; turns<9; turns++) {
     //toggle being x or o
     //thanks to https://stackoverflow.com/questions/610916/easiest-way-to-flip-a-boolean-value, !whatever is so obvisous, thanks stackover post!
     x_or_o = !x_or_o;
