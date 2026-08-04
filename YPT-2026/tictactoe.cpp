@@ -169,7 +169,7 @@ for (int turns; turns>9; turns++) {
     //board[x][y] = input;
     //nice! Might be finished, wait, we take turns, x and o. Oh wait, we don't update the board with the input, but rather who's turn it is! So let's inplement it!
     //alright, added the x_or_o boolean, now time to update the board
-    board[x][y] = x_or_o; //perfect! Yay! Now time to try to compile~
+    board[x][y] = x_or_o;
 
     if (turns >= 5){
         if (winDetection(board,x_or_o)){
