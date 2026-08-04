@@ -170,7 +170,7 @@ for (int turns = 0; turns<9; turns++) {
     x_or_o = !x_or_o;
     //perfect!
     //message displayed at the start of each turn
-    std::cout << tab << tab << "turn #" << turns+1;
+    std::cout << tab << tab << "turn #" << turns+1; << std::endl;
     //draw board so they see the numbers they can enter
     //or just display the board(so they can see the board on each loop)
     displayBoard(board);
