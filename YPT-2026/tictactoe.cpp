@@ -1,5 +1,23 @@
 #include <iostream>
+#define debug true
+/*debug message template:
+for each function, make a varible called, something along the lines of: "debugTemplate"
+the debug template is: "debug log: functionName: "(remember the space after the colon).
+to write the log to the standered output(or if someone adds a log file):
+no tab is needed before this message
+debugTemplate << "message"
+oh wait, I am not using string, so, I guess maybe you will have to type it everytime or something.
+*/
+// ---global varibles---
+//thanks to: https://www.geeksforgeeks.org/cpp/cpp-global-variables/, and this for teaching me how to make a global varible: https://www.geeksforgeeks.org/cpp/local-and-global-variables/
+char space = 32;
+char pipe = 124;
+char tab = 9; //this is a horizontal tab.
 bool winDetection(bool board[3][3], bool turn){
+    //debugTemplate = // oh yeah, I am not using string.(added another "//" so you can see where the code ends and where the message starts(might be important to rember not to remove it.))
+    if (debug){
+    std::cout << "debug log: winDetection: function called" << std::endl;
+    }
     //we need the ones we are checking to be ones(will be simpilist, as we can just use and's)
     //by defualt, o would be checked, so we could do that first, wait, we only check with who's turn it is. I belice that is why I added that.
     if (turn == false) {//this is X.
@@ -49,6 +67,9 @@ bool diagnalTopLeft = board[2][0] && board[1][1] && board[0][2];
 //time to check for any wins!
 if (columns[0] || columns[1] || columns[2] || rows[0] || rows[1] || rows[2] || diagnalTopLeft || diagnalTopRight){
     //you win! Yay!
+    if (debug){
+    std::cout << "debug log: winDetection: you win!" << std::endl;
+    }
     return turn;
 } else{
     return NULL; //nobody won yet.
@@ -110,9 +131,6 @@ void displayBoard(bool board[3][3]) {
     //time to draw the board on the screen!
     //char space = 0x20; //could have used 32, but I have heard of %20 before, and it seems it must work like %hexcode, so I used 0x20 instead of 32.// https://www.ascii-code.com/ASCII
     //idk if that works, do I have to put single quotes around it, IDK, so I would have to do 32.
-    char space = 32;
-    char pipe = 124;
-    char tab = 9; //this is a horizontal tab.
     //std::cout << tab << tab << pipe << space << display[0,0] << space << pipe << space << display[1][0] << space << pipe << space << display[2][0] << space << pipe << std:endl; //whew, needed to lookup the spelling!
     //time for the next one, I will just copy and paste it and chage stuff up, wait, we could use a loop! will copy and paste the old one to make the new one(the one inside the loop)
     for (int y=0; y<3; y++) {
@@ -120,19 +138,19 @@ void displayBoard(bool board[3][3]) {
     }
     //now enter too new lines to make it look nice!
     std::cout << std::endl << std::endl;
-    //were done, I belive when the function closes, stuff gets freed, but let's free it just too be safe!
-    /*free(&display);
-    free(&space);
-    free(&pipe);
-    free(&tab);*/
-    //nice, now were done! Yay!
-    //no need to return, well, we don;t return anything, so is return even possible!
+    //no need to return, well, we don't return anything, so is return even possible!
 }
 int main() {
+    // --- varible definitions ---
     int input = 0;
     bool x_or_o; //as xOrO looks werid, Could do xOr_O. Still looks werid(just noticed that!)
     // 0=x, 1=o, null=nothing
     bool board[3][3] = {
+        {NULL, NULL, NULL},
+        {NULL, NULL, NULL},
+        {NULL, NULL, NULL}
+    };
+    bool blankBoard[3][3] = { //literally copy and pasted the one above
         {NULL, NULL, NULL},
         {NULL, NULL, NULL},
         {NULL, NULL, NULL}
@@ -145,15 +163,20 @@ int main() {
         {0,1}, {1,1}, {2,1},
         {0,2}, {1,2}, {2,2} /*Formating the array was SO much faster!*/
     };
+    // --- not varible definitions(IDK what to say, this is the end of the varibles definitons) ---
 for (int turns; turns>9; turns++) {
     //toggle being x or o
     //thanks to https://stackoverflow.com/questions/610916/easiest-way-to-flip-a-boolean-value, !whatever is so obvisous, thanks stackover post!
     x_or_o = !x_or_o;
     //perfect!
-
+    //message displayed at the start of each turn
+    std::cout << tab << tab << "turn #" << turns+1;
     //draw board so they see the numbers they can enter
     //or just display the board(so they can see the board on each loop)
     displayBoard(board);
+    std::cout << tab << tab << "-------------" << std::endl; //so, it goes: pipe, space, symbol(will call x), nevermind, I will just count charatchers(what I was going to do here). Ok, aside from the first two tabs, there are *counts*\ 13 charatchers.
+    std::cout << tab << tab << "empty board(so you can see the numbers)" << std::endl /*second new line to look nice.*/ << std::endl;
+    displayBoard(blankBoard);
     //take input from the user
     std::cout << "Please enter 1-9" << std::endl;
     std::cin >> input;
