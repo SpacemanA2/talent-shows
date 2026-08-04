@@ -13,7 +13,7 @@ oh wait, I am not using string, so, I guess maybe you will have to type it every
 char space = 32;
 char pipe = 124;
 char tab = 9; //this is a horizontal tab.
-bool winDetection(bool board[3][3], bool turn){
+uint8_t winDetection(uint8_t board[3][3], bool turn){
     //debugTemplate = // oh yeah, I am not using string.(added another "//" so you can see where the code ends and where the message starts(might be important to rember not to remove it.))
     if (debug){
     std::cout << "debug log: winDetection: function called" << std::endl;
@@ -23,7 +23,10 @@ bool winDetection(bool board[3][3], bool turn){
     if (turn == false) {//this is X.
         for (int x = 0; x<3; x++) {
             for (int y = 0; y<3; y++) {
-                board[x][y]=!board[x][y]; //very underwelming(very dramatic, then the most underwelming thing ever.)
+                if (board[x][y] != 2){ //thanks to chatgpt for telling me I needed to turn !== into !=
+                    //thanks to chatgpt for this
+                    board[x][y] = (board[x][y]+1)%2 ; //very underwelming(very dramatic, then the most underwelming thing ever.) thanks to: https://www.geeksforgeeks.org/cpp/operators-in-cpp/ and https://www.w3schools.com/cpp/cpp_operators_precedence.asp(found the link when I looked up if cpp has order of operations)
+                }
             }
         }
     } /*else if(turn = true){
@@ -35,13 +38,13 @@ bool winDetection(bool board[3][3], bool turn){
     //check collums(vertical)
     //column_y_0 = board[0,0]
     //bool threeNulls[3] = {NULL, NULL, NULL};
-    bool columns[3] = {NULL, NULL, NULL};
+    uint8_t columns[3] = {2, 2, 2};
     for (int i = 0; i>3; i++) {
         columns[i] = board[i][0] || board[i][1] | board[i][2];
     }
-    bool rows[3] = {NULL, NULL, NULL};
+    uint8_t rows[3] = {2, 2, 2};
     for (int i = 0; i<3; i++){
-        rows[i] = board[0][i] || board[1][i] || board[2][i];
+        rows[i] = (board[0][i] == 1) || (board[1][i] == 1) || (board[2][i] == 1);
     }
 //time to check for diagnals
 /*
@@ -67,13 +70,11 @@ bool diagnalTopLeft = board[2][0] && board[1][1] && board[0][2];
 //time to check for any wins!
 if (columns[0] || columns[1] || columns[2] || rows[0] || rows[1] || rows[2] || diagnalTopLeft || diagnalTopRight){
     //you win! Yay!
-    if (debug){
-    std::cout << "debug log: winDetection: you win!" << std::endl;
-    }
+    if (debug){ std::cout << "debug log: winDetection: you win!" << std::endl; }
     return turn;
-} else{
-    return NULL; //nobody won yet.
-}
+    } else{
+    return 2; //nobody won yet.
+    }
 //free up all the varibles
 //free(&threeNulls); Threenulls is not used anymore
 /*free(&columns);
@@ -81,7 +82,7 @@ free(&rows);
 free(&diagnalTopLeft);
 free(&diagnalTopRight); */
 }
-void displayBoard(bool board[3][3]) {
+void displayBoard(uint8_t board[3][3]) {
     char display[3][3] = {
         {0x00, 0x00, 0x00},
         {0x00, 0x00, 0x00},
@@ -94,7 +95,7 @@ void displayBoard(bool board[3][3]) {
                 display[x][y] = 'X';
             } else if (board[x][y] == 1) {
                 display[x][y] = 'O';
-            } else if (board[x][y] == 0x00) {
+            } else if (board[x][y] == 2) {
                 /*
                 for this thought, I will lable stuff (x, y) - #
                 (0, 0) -1, (1, 0) -2, (2,0) -3
@@ -121,7 +122,7 @@ void displayBoard(bool board[3][3]) {
                 */
                 display[x][y] = y*3 +x +1;
             } else {
-                std::cout << "Program error: inital board array is invalid, should be 0, 1, or Null, but got" << board[x][y] << std::endl;
+                std::cout << "Program error: inital board array is invalid, should be 0, 1, or 2, but got" << board[x][y] << std::endl;
                 std::cout << "current x and y is" << "x: " << x << "y: " << y << "please report to developer under issues(on the github repository), or fix it if you know how to, and submit a commit. Thanks!" << std::endl;
                 std::cout << "exiting program with exit code 1" << std::endl;
                 exit(1); //thanks to https://www.geeksforgeeks.org/cpp/exit-codes-in-c-c-with-examples/
@@ -136,7 +137,7 @@ void displayBoard(bool board[3][3]) {
     for (int y=0; y<3; y++) {
         std::cout << tab << tab << pipe << space << display[0,y] << space << pipe << space << display[1][y] << space << pipe << space << display[2][y] << space << pipe << std::endl;
     }
-    //now enter too new lines to make it look nice!
+    //now enter 2 new lines to make it look nice!
     std::cout << std::endl << std::endl;
     //no need to return, well, we don't return anything, so is return even possible!
 }
@@ -145,15 +146,15 @@ int main() {
     int input = 0;
     bool x_or_o; //as xOrO looks werid, Could do xOr_O. Still looks werid(just noticed that!)
     // 0=x, 1=o, null=nothing
-    bool board[3][3] = {
-        {NULL, NULL, NULL},
-        {NULL, NULL, NULL},
-        {NULL, NULL, NULL}
+    uint8_t board[3][3] = { //2=null(noone plauyed there, so display the square number)
+        {2, 2, 2}, 
+        {2, 2, 2},
+        {2, 2, 2}
     };
-    bool blankBoard[3][3] = { //literally copy and pasted the one above
-        {NULL, NULL, NULL},
-        {NULL, NULL, NULL},
-        {NULL, NULL, NULL}
+    uint8_t blankBoard[3][3] = { //literally copy and pasted the one above
+        {2, 2, 2},
+        {2, 2, 2},
+        {2, 2, 2}
     };
     int numberToXY[9][2] = { /* index(number-1) = {x, y} */
         /*
@@ -170,7 +171,7 @@ for (int turns = 0; turns<9; turns++) {
     x_or_o = !x_or_o;
     //perfect!
     //message displayed at the start of each turn
-    std::cout << tab << tab << "turn #" << turns+1; << std::endl;
+    std::cout << tab << tab << "turn #" << turns+1 << std::endl;
     //draw board so they see the numbers they can enter
     //or just display the board(so they can see the board on each loop)
     displayBoard(board);
@@ -193,7 +194,6 @@ for (int turns = 0; turns<9; turns++) {
     //nice! Might be finished, wait, we take turns, x and o. Oh wait, we don't update the board with the input, but rather who's turn it is! So let's inplement it!
     //alright, added the x_or_o boolean, now time to update the board
     board[x][y] = x_or_o;
-
     if (turns >= 5){
         if (winDetection(board,x_or_o)){
             if (x_or_o == 0){
