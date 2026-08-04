@@ -3,7 +3,7 @@ bool winDetection(bool board[3][3], bool turn){
     //we need the ones we are checking to be ones(will be simpilist, as we can just use and's)
     //by defualt, o would be checked, so we could do that first, wait, we only check with who's turn it is. I belice that is why I added that.
     if (turn == false) {//this is X.
-        for (int x = 0; x<3, x++;) {
+        for (int x = 0; x<3; x++) {
             for (int y = 0; y<3; y++) {
                 board[x][y]=!board[x][y]; //very underwelming(very dramatic, then the most underwelming thing ever.)
             }
@@ -11,18 +11,18 @@ bool winDetection(bool board[3][3], bool turn){
     } /*else if(turn = true){
 
     } do nothing */
-    else if(turn == NULL){
+    /* was causing a -Wpointer-arith issue else if(turn == NULL){
         std::cout << "error, turn does not except NULL as a parameter. Please report this issue on github under the issues menu" << "pointer becuase why not: " << &turn << std::endl;
-    }
+    }*/
     //check collums(vertical)
     //column_y_0 = board[0,0]
     //bool threeNulls[3] = {NULL, NULL, NULL};
-    bool columns[3] = {NULL, NULL, NULL}
-    for (int i = 0; i>3; i++;) {
+    bool columns[3] = {NULL, NULL, NULL};
+    for (int i = 0; i>3; i++) {
         columns[i] = board[i][0] || board[i][1] | board[i][2];
     }
-    bool rows[3] = {NULL, NULL, NULL}
-    for (int i = 0; i<3; i++;){
+    bool rows[3] = {NULL, NULL, NULL};
+    for (int i = 0; i<3; i++){
         rows[i] = board[0][i] || board[1][i] || board[2][i];
     }
 //time to check for diagnals
@@ -55,10 +55,10 @@ if (columns[0] || columns[1] || columns[2] || rows[0] || rows[1] || rows[2] || d
 }
 //free up all the varibles
 //free(&threeNulls); Threenulls is not used anymore
-free(&columns);
+/*free(&columns);
 free(&rows);
 free(&diagnalTopLeft);
-free(&diagnalTopRight);
+free(&diagnalTopRight); */
 }
 void displayBoard(bool board[3][3]) {
     char display[3][3] = {
@@ -67,8 +67,8 @@ void displayBoard(bool board[3][3]) {
         {0x00, 0x00, 0x00}
     }; //what to display
     //create the display(Well, convert it from board to display)
-    for (int x=0; x<3; x++;) {
-        for (int y=0; y<3; y++;){
+    for (int x=0; x<3; x++) {
+        for (int y=0; y<3; y++){
             if (board[x][y] == 0) {
                 display[x][y] = 'X';
             } else if (board[x][y] == 1) {
@@ -121,10 +121,10 @@ void displayBoard(bool board[3][3]) {
     //now enter too new lines to make it look nice!
     std::cout << std::endl << std::endl;
     //were done, I belive when the function closes, stuff gets freed, but let's free it just too be safe!
-    free(&display);
+    /*free(&display);
     free(&space);
     free(&pipe);
-    free(&tab);
+    free(&tab);*/
     //nice, now were done! Yay!
     //no need to return, well, we don;t return anything, so is return even possible!
 }
@@ -144,7 +144,7 @@ int main() {
         {0,0}, /* 0(1-1) */ {1,0}, {2,0},
         {0,1}, {1,1}, {2,1},
         {0,2}, {1,2}, {2,2} /*Formating the array was SO much faster!*/
-    }
+    };
 for (int turns; turns>9; turns++) {
     //toggle being x or o
     //thanks to https://stackoverflow.com/questions/610916/easiest-way-to-flip-a-boolean-value, !whatever is so obvisous, thanks stackover post!
@@ -183,8 +183,8 @@ for (int turns; turns>9; turns++) {
     }
 }
 //free everything, as we are done!
-free(&input);
+/*free(&input);
 free(&x_or_o);
 free(&board);
-free(&numberToXY);
+free(&numberToXY); was yelling at me for freeing allocated space*/
 }
