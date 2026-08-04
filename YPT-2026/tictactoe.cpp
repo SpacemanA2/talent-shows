@@ -3,9 +3,9 @@ bool winDetection(bool board[3][3], bool turn){
     //we need the ones we are checking to be ones(will be simpilist, as we can just use and's)
     //by defualt, o would be checked, so we could do that first, wait, we only check with who's turn it is. I belice that is why I added that.
     if (turn == false) {//this is X.
-        for (int x = 0; x<3, x++) {
+        for (int x = 0; x<3, x++;) {
             for (int y = 0; y<3; y++) {
-                board[x[y]]=!board[x][y] //very underwelming(very dramatic, then the most underwelming thing ever.)
+                board[x][y]=!board[x][y]; //very underwelming(very dramatic, then the most underwelming thing ever.)
             }
         }
     } /*else if(turn = true){
@@ -16,13 +16,13 @@ bool winDetection(bool board[3][3], bool turn){
     }
     //check collums(vertical)
     //column_y_0 = board[0,0]
-    bool threeNulls[3] = {NULL, NULL, NULL};
-    bool columns[3] = threeNulls
-    for (int i = 0; i>3; i++) {
+    //bool threeNulls[3] = {NULL, NULL, NULL};
+    bool columns[3] = {NULL, NULL, NULL}
+    for (int i = 0; i>3; i++;) {
         columns[i] = board[i][0] || board[i][1] | board[i][2];
     }
-    bool rows[3] = threeNulls;
-    for (int i = 0; i<3; i++){
+    bool rows[3] = {NULL, NULL, NULL}
+    for (int i = 0; i<3; i++;){
         rows[i] = board[0][i] || board[1][i] || board[2][i];
     }
 //time to check for diagnals
@@ -54,7 +54,7 @@ if (columns[0] || columns[1] || columns[2] || rows[0] || rows[1] || rows[2] || d
     return NULL; //nobody won yet.
 }
 //free up all the varibles
-free(&threeNulls);
+//free(&threeNulls); Threenulls is not used anymore
 free(&columns);
 free(&rows);
 free(&diagnalTopLeft);
@@ -67,8 +67,8 @@ void displayBoard(bool board[3][3]) {
         {0x00, 0x00, 0x00}
     }; //what to display
     //create the display(Well, convert it from board to display)
-    for (int x=0; x<3; x++) {
-        for (int y=0; y<3; y++){
+    for (int x=0; x<3; x++;) {
+        for (int y=0; y<3; y++;){
             if (board[x][y] == 0) {
                 display[x][y] = 'X';
             } else if (board[x][y] == 1) {
@@ -170,6 +170,7 @@ for (int turns; turns>9; turns++) {
     //nice! Might be finished, wait, we take turns, x and o. Oh wait, we don't update the board with the input, but rather who's turn it is! So let's inplement it!
     //alright, added the x_or_o boolean, now time to update the board
     board[x][y] = x_or_o; //perfect! Yay! Now time to try to compile~
+
     if (turns >= 5){
         if (winDetection(board,x_or_o)){
             if (x_or_o == 0){
@@ -177,9 +178,13 @@ for (int turns; turns>9; turns++) {
             } else if (x_or_o == 1){
                 std::cout << "O Wins! Good job!" << std::endl;
             //if it is nuill, do nothing, so nothing goes here, as the final possibility is null(I think it is, I do not belive undefined exists!), in which we do nothing.
+            }
         }
     }
-    return 1;
 }
-
+//free everything, as we are done!
+free(&input);
+free(&x_or_o);
+free(&board);
+free(&numberToXY);
 }
