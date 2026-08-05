@@ -135,7 +135,7 @@ void displayBoard(uint8_t board[3][3]) {
     //std::cout << tab << tab << pipe << space << display[0,0] << space << pipe << space << display[1][0] << space << pipe << space << display[2][0] << space << pipe << std:endl; //whew, needed to lookup the spelling!
     //time for the next one, I will just copy and paste it and chage stuff up, wait, we could use a loop! will copy and paste the old one to make the new one(the one inside the loop)
     for (int y=0; y<3; y++) {
-        std::cout << tab << tab << pipe << space << display[0,y] << space << pipe << space << display[1][y] << space << pipe << space << display[2][y] << space << pipe << std::endl;
+        std::cout << tab << tab << pipe << space << display[0,y] << space << pipe << space << display[1][y] << space << pipe << space << display[2][y] << space << pipe << std::endl /* another endl to look nice*/ << std::endl;
     }
     //now enter 2 new lines to make it look nice!
     std::cout << std::endl << std::endl;
