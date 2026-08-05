@@ -121,6 +121,7 @@ void displayBoard(uint8_t board[3][3]) {
                 the start of the line(without +X), is 6, which is 0, 3. 3*3 is 6, then the plus twp. 6+2=8, perfect! Yay! Works!
                 */
                 display[x][y] = y*3 +x +1;
+                if (debug){std::cout << "debug log: winDetection: a number will be displayed on the grid, that number is: " << y*3 +x +1 << " cords are: " << x << "," << y << std::endl;}
             } else {
                 std::cout << "Program error: inital board array is invalid, should be 0, 1, or 2, but got" << board[x][y] << std::endl;
                 std::cout << "current x and y is" << "x: " << x << "y: " << y << "please report to developer under issues(on the github repository), or fix it if you know how to, and submit a commit. Thanks!" << std::endl;
@@ -128,7 +129,6 @@ void displayBoard(uint8_t board[3][3]) {
                 exit(1); //thanks to https://www.geeksforgeeks.org/cpp/exit-codes-in-c-c-with-examples/
             }
         }
-    }
     //time to draw the board on the screen!
     //char space = 0x20; //could have used 32, but I have heard of %20 before, and it seems it must work like %hexcode, so I used 0x20 instead of 32.// https://www.ascii-code.com/ASCII
     //idk if that works, do I have to put single quotes around it, IDK, so I would have to do 32.
@@ -140,6 +140,7 @@ void displayBoard(uint8_t board[3][3]) {
     //now enter 2 new lines to make it look nice!
     std::cout << std::endl << std::endl;
     //no need to return, well, we don't return anything, so is return even possible!
+}
 }
 int main() {
     // --- varible definitions ---
@@ -195,12 +196,21 @@ for (int turns = 0; turns<9; turns++) {
     //alright, added the x_or_o boolean, now time to update the board
     board[x][y] = x_or_o;
     if (turns >= 5){
-        if (winDetection(board,x_or_o)){
-            if (x_or_o == 0){
+    uint8_t winDetection_results = winDetection(board,x_or_o);
+        if (winDetection_results != 2){
+            if (winDetection_results == 0){
                 std::cout << "X Wins! Good job!" << std::endl;
-            } else if (x_or_o == 1){
+            } else if (winDetection_results == 1){
                 std::cout << "O Wins! Good job!" << std::endl;
-            //if it is nuill, do nothing, so nothing goes here, as the final possibility is null(I think it is, I do not belive undefined exists!), in which we do nothing.
+            //ignore this, it is old: //if it is null, do nothing, so nothing goes here, as the final possibility is null(I think it is, I do not belive undefined exists!), in which we do nothing.
+            //wait, it servers two purpeses, what if it is 2(null), then, we do nothing, perfect!
+            //wait, after talking to chatgpt, I relised I should check if it is not 2.
+            } else{ //only thing left, is, well, everything else.
+                std::cout << "error: winDetection should not be something that is not, 0, 1, or 2. " << std::endl << "please report this under issues on the github repository, or send a commit with the fix. " <<std::endl << "winDetection is set to: " << winDetection_results << std::endl;
+                std::cout << "the pointer for the varible that stores winDetection is: " << &winDetection_results << " exiting with code 1";
+                exit(1);
+            }
+
             }
         }
     }
@@ -210,4 +220,3 @@ for (int turns = 0; turns<9; turns++) {
 free(&x_or_o);
 free(&board);
 free(&numberToXY); was yelling at me for freeing allocated space*/
-}
